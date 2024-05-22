@@ -1,3 +1,5 @@
+name: inception
+
 services:
   nginx:
     build: ./nginx/
@@ -8,3 +10,55 @@ services:
       - ./nginx/tools/ssl/:/etc/nginx/ssl/:ro
     ports:
       - 443:443
+
+    networks:
+      frontend:
+
+  term:
+    image: alpine:3.18.0
+    entrypoint: ["/bin/sh", "-c", "sleep infinity"] 
+    secrets:
+      - my_secret
+    env_file:
+      - ./.env
+
+    networks:
+      frontend:
+      backend:
+
+  wordpress:
+    image: wordpress
+    depends_on:
+      - mysql
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: "coffee"
+      WORDPRESS_DB_NAME: wordpress
+    networks:
+      frontend:
+      backend:
+
+  mysql:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: "coffee"
+    volumes:
+      - ./volumes/mysql:/var/lib/mysql
+    networks:
+      backend:
+
+networks:
+  frontend:
+    ipam:
+      driver: default
+  backend:
+    ipam:
+      driver: default
+
+secrets:
+  my_secret:
+    file: ../secrets/credentials.txt
