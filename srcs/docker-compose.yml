@@ -2,12 +2,12 @@ name: inception
 
 services:
   nginx:
-    build: ./nginx/
+    build: ./requirements/nginx/
     volumes:
-      - ./nginx/inception.conf:/etc/nginx/http.d/default.conf:ro
-      - ./nginx/logs/:/var/log/nginx/
-      - ./nginx/tools/www/:/www/
-      - ./nginx/tools/ssl/:/etc/nginx/ssl/:ro
+      - ./requirements/nginx/inception.conf:/etc/nginx/http.d/default.conf:ro
+      - ./requirements/nginx/logs/:/var/log/nginx/
+      - ./requirements/nginx/tools/www/:/www/
+      - ./requirements/nginx/tools/ssl/:/etc/nginx/ssl/:ro
     ports:
       - 443:443
 
@@ -27,25 +27,25 @@ services:
       backend:
 
   wordpress:
-    image: wordpress
+    build: ./requirements/wordpress
     depends_on:
       - mysql
     ports:
       - 8080:80
     environment:
-      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: "coffee"
+      WORDPRESS_DB_PASSWORD: "rootroot"
       WORDPRESS_DB_NAME: wordpress
     networks:
       frontend:
       backend:
 
-  mysql:
+  mariadb:
     image: "mysql:5.7"
     environment:
       MYSQL_DATABASE: wordpress
-      MYSQL_ROOT_PASSWORD: "coffee"
+      MYSQL_ROOT_PASSWORD: "rootroot"
     volumes:
       - ./volumes/mysql:/var/lib/mysql
     networks:

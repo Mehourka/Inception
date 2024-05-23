@@ -2,7 +2,7 @@
 Simple webstack, orchestrated by docker compose.
 
 todo:
-- [] setup secrets
+- [X] setup secrets
 - [] setup .env ?
 - []
 
@@ -12,11 +12,12 @@ todo:
     - [x] Https 443 only
 
 ##WordPress:
-    - [] ?
+    - [] WordPress + php-fpm
+    - [] configured
 
 ##MariaDB:
     - [] ?
 
 ##docker-network:
-    - [] Create a network, not host, no --links.
+    - [X] Create a network, not host, no --links.
 
