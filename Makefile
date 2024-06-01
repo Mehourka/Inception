@@ -7,6 +7,9 @@ all: down up
 up:
 	${DOCKER_COMPOSE} up --build -d 
 
+exec-%:
+	${DOCKER_COMPOSE} exec $* ash;
+
 run:
 	${DOCKER_COMPOSE} run --build nginx
 
