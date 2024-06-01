@@ -12,12 +12,16 @@ todo:
     - [x] Https 443 only
 
 ##WordPress:
-    - [] WordPress + php-fpm
-    - [] configured
+    - [X] SetUp php-fpm with nginx
+    - [X] Install WordPress
+    - [] Configure with mariaDB
+    - [] Add two users
 
 ##MariaDB:
+    - [] Install, create, configure
     - [] ?
 
 ##docker-network:
     - [X] Create a network, not host, no --links.
+    - [] Setup the host name
 
