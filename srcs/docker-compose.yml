@@ -14,50 +14,42 @@ services:
     networks:
       frontend:
 
-  term:
-    image: alpine:3.18.0
-    entrypoint: ["/bin/sh", "-c", "sleep infinity"] 
-    secrets:
-      - my_secret
-    env_file:
-      - ./.env
-
-    networks:
-      frontend:
-      backend:
-
   wordpress:
     build: ./requirements/wordpress
-    depends_on:
-      - mysql
-    ports:
-      - 8080:80
+    # depends_on:
+      # - db
+    expose:
+      - 9000 
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: "rootroot"
       WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./requirements/nginx/tools/www/:/www/
+      # adduser -D -H -G wordpress_user wordpressuser
+
     networks:
       frontend:
-      backend:
+      # backend:
 
-  mariadb:
-    image: "mysql:5.7"
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_ROOT_PASSWORD: "rootroot"
-    volumes:
-      - ./volumes/mysql:/var/lib/mysql
-    networks:
-      backend:
+  # db:
+  #   image: "mysql:5.7"
+  #   environment:
+  #     MYSQL_DATABASE: wordpress
+  #     MYSQL_ROOT_PASSWORD: "rootroot"
+  #   volumes:
+  #     - ./volumes/mysql:/var/lib/mysql
+  #   networks:
+  #     backend:
 
 networks:
   frontend:
     ipam:
       driver: default
-  backend:
-    ipam:
-      driver: default
+  # backend:
+  #   ipam:
+  #     driver: default
 
 secrets:
   my_secret:

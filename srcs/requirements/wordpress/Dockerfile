@@ -7,12 +7,17 @@ ENV PKG_RELEASE   1
 
 # Add user for Nginx
 RUN set -x\
-   && addgroup -g 101 -S nginx\
-   && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin\
-     -G nginx -g nginx nginx\
-   && apk update && apk --no-cache add nginx vim openrc
+   && apk update && apk --no-cache add php81 php81-fpm openrc \
+   && addgroup wordpress_user\
+   && adduser -D -H -G wordpress_user wordpress_user\
+   # Listend to all ports
+   && sed -i 's/127.0.0.1/0.0.0.0/' /etc/php81/php-fpm.d/www.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+   # && mkdir -p /run/openrc/ &&  touch /run/openrc/softlevel 
+   # && openrc && service php-fpm81 start
+
+# CMD ["/bin/sh", "-c", "sleep infinity"]
+CMD ["php-fpm81", "-F", "-O"]
 
 
 
