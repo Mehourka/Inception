@@ -6,8 +6,8 @@ services:
     volumes:
       - ./requirements/nginx/inception.conf:/etc/nginx/http.d/default.conf:ro
       - ./requirements/nginx/logs/:/var/log/nginx/
-      # - ./requirements/nginx/tools/www/:/www/
       - ./requirements/nginx/tools/ssl/:/etc/nginx/ssl/:ro
+      - web_data:/www/
     ports:
       - 443:443
 
@@ -25,8 +25,8 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: "rootroot"
       WORDPRESS_DB_NAME: wordpress
-    # volumes:
-      # - ./requirements/nginx/tools/www/:/www/
+    volumes:
+      - web_data:/www/
       # adduser -D -H -G wordpress_user wordpressuser
 
     networks:
