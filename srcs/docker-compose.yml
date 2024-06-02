@@ -21,35 +21,59 @@ services:
     expose:
       - 9000 
     environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: "rootroot"
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     volumes:
+      - ./wp_data/:/www/:wo
       - web_data:/www/
       # adduser -D -H -G wordpress_user wordpressuser
 
     networks:
       frontend:
-      # backend:
+      backend:
 
-  # db:
-  #   image: "mysql:5.7"
-  #   environment:
-  #     MYSQL_DATABASE: wordpress
-  #     MYSQL_ROOT_PASSWORD: "rootroot"
-  #   volumes:
-  #     - ./volumes/mysql:/var/lib/mysql
-  #   networks:
-  #     backend:
+#   db:
+#     build: ./requirements/mariadb/
+#     environment:
+#       DB_NAME: wordpress
+#       DB_PASSWORD: "rootroot"
+#     volumes:
+#       - db_data:/var/lib/mysql
+
+#     entrypoint: ["tail", "-f", "/dev/null"]
+#     networks:
+#       backend:
+
+  test_sql:
+    image: mariadb:11.1
+    environment:
+      MARIADB_ROOT_PASSWORD: 123456
+      MARIADB_DATABASE: ${WORDPRESS_DB_NAME}
+      MARIADB_USER: ${WORDPRESS_DB_USER}
+      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    volumes:
+      - test_db_data:/var/lib/mysql 
+    ports:
+      - 3307:3306
+    expose:
+      - 3306
+    networks:
+      backend:
 
 networks:
   frontend:
     ipam:
       driver: default
-  # backend:
-  #   ipam:
-  #     driver: default
+  backend:
+    ipam:
+      driver: default
+
+volumes:
+  web_data:
+  db_data:
+  test_db_data:
 
 secrets:
   my_secret:

@@ -2,7 +2,7 @@ NGINX_IMG=nginx
 DOCKER_COMPOSE=docker compose -f ./srcs/docker-compose.yml
 
 all: down up
-	${DOCKER_COMPOSE} exec db /bin/ash
+	${DOCKER_COMPOSE} exec wordpress /bin/ash
 
 up:
 	${DOCKER_COMPOSE} up --build -d 
