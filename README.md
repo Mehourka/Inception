@@ -1,30 +1,28 @@
 # Inception
 Simple webstack, orchestrated by docker compose.
 
-todo:
+## TODO:
 - [X] setup secrets
 - [X] setup .env
 - [ ]
 
-##NGINX:
+### NGINX:
 - [x] setup nginx
 - [x] Self signed ssl certificates
 - [x] Https 443 only
 
-##WordPress:
+### WordPress:
 - [X] SetUp php-fpm with nginx
 - [X] Install WordPress
 - [X] Add two users
 - [X] Connect with official mariaDB image
 - [ ] Connect with custom mariaDB image
 
-
-
-##MariaDB:
+### MariaDB:
 - [ ] Install, create, configure
 - [ ] ?
 
-##docker-network:
+### Docker Network:
 - [X] Create a network, not host, no --links.
 - [ ] Setup the host name
 
