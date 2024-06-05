@@ -22,12 +22,8 @@ RUN mkdir -p /www/ && cd /www/\
 
 RUN set -x\
    && apk update && apk --no-cache add php81 php81-fpm php81-mysqli \
-   # Listend to all ports
-   && sed -i 's/127.0.0.1/0.0.0.0/' /etc/php81/php-fpm.d/www.conf \
-   && echo "clear_env = no" >> /etc/php81/php-fpm.d/www.conf \
    # Enable php-mysqli module
    && sed -i 's/;extension=mysqli/extension=mysqli/' /etc/php81/php.ini
 
-COPY ./config/wp-config.php /tmp/wp-confing.php
-
+COPY ./config/kmehour.42.conf /etc/php81/php-fpm.d/www.conf 
 CMD ["php-fpm81", "-F", "-O"]
