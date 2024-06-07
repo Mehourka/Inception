@@ -10,56 +10,61 @@ services:
       - web_data:/www/
     ports:
       - 443:443
-
     networks:
       frontend:
-
-  wordpress:
-    build: ./requirements/wordpress
-    # depends_on:
-      # - db
-    expose:
-      - 9000 
-    environment:
-      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-    volumes:
-      - web_data:/www/
-      - ./requirements/wordpress/config/wp-config.php:/www/wordpress/wp-config.php:ro
-
-    networks:
-      frontend:
-      backend:
-
-#   db:
-#     build: ./requirements/mariadb/
-#     environment:
-#       DB_NAME: wordpress
-#       DB_PASSWORD: "rootroot"
-#     volumes:
-#       - db_data:/var/lib/mysql
-
-#     entrypoint: ["tail", "-f", "/dev/null"]
-#     networks:
-#       backend:
+    restart: always
 
   test_sql:
     image: mariadb:11.1
     environment:
-      MARIADB_ROOT_PASSWORD: 123456
-      MARIADB_DATABASE: ${WORDPRESS_DB_NAME}
-      MARIADB_USER: ${WORDPRESS_DB_USER}
-      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-    volumes:
-      - test_db_data:/var/lib/mysql 
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    # volumes:
+    #   - test_db_data:/var/lib/mysql 
     ports:
       - 3307:3306
     expose:
       - 3306
     networks:
       backend:
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    depends_on:
+      - test_sql
+    expose:
+      - 9000 
+    environment:
+      WP_SUPER_USER: ${WP_SUPER_USER}
+      WP_SUPER_PASSWORD: ${WP_SUPER_PASSWORD}
+      WP_USER: ${WP_USER}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      HOST_42: ${HOST_42}
+      WP_EMAIL: ${WP_EMAIL}
+    volumes:
+      - web_data:/www/
+      # - ./requirements/wordpress/config/wp-config.php:/www/wordpress/wp-config.php:ro
+    networks:
+      frontend:
+      backend:
+
+  # db:
+  #   build: ./requirements/mariadb/
+  #   environment:
+  #     DB_NAME: wordpress
+  #     DB_PASSWORD: "rootroot"
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   entrypoint: ["tail", "-f", "/dev/null"]
+  #   networks:
+  #     backend:
+
 
 networks:
   frontend:

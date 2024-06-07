@@ -13,6 +13,3 @@ RUN set -x\
    && apk update && apk --no-cache add nginx vim openrc
 
 CMD ["nginx", "-g", "daemon off;"]
-
-
-
