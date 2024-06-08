@@ -16,11 +16,12 @@ Simple webstack, orchestrated by docker compose.
 - [X] Install WordPress
 - [X] Add two users
 - [X] Connect with official mariaDB image
-- [ ] Restrict wordpress admin user name (Must not contain 'admin')
+- [X] Restrict wordpress admin user name (Must not contain 'admin')
 - [ ] Connect with custom mariaDB image
 
 ### MariaDB:
 - [ ] Install, create, configure
+- [ ] Check if db exists before creating it
 - [ ] ?
 
 ### Docker Network:
