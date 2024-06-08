@@ -41,13 +41,15 @@ services:
     environment:
       WP_SUPER_USER: ${WP_SUPER_USER}
       WP_SUPER_PASSWORD: ${WP_SUPER_PASSWORD}
+      WP_SUPER_EMAIL: ${WP_SUPER_EMAIL}
       WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      WP_EMAIL: ${WP_EMAIL}
       DB_HOST: ${DB_HOST}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
       HOST_42: ${HOST_42}
-      WP_EMAIL: ${WP_EMAIL}
     volumes:
       - web_data:/www/
       # - ./requirements/wordpress/config/wp-config.php:/www/wordpress/wp-config.php:ro
