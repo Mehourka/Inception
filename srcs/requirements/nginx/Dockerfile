@@ -12,4 +12,12 @@ RUN set -x\
      -G nginx -g nginx nginx\
    && apk update && apk --no-cache add nginx vim openrc
 
+RUN apk add --no-cache envsubst
+
+COPY ./config/inception.conf /etc/nginx/http.d/default.conf
+
+COPY  ./config/entrypoint.sh /entrypoint.sh
+RUN   chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

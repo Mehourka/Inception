@@ -4,7 +4,6 @@ services:
   nginx:
     build: ./requirements/nginx/
     volumes:
-      - ./requirements/nginx/inception.conf:/etc/nginx/http.d/default.conf:ro
       - ./requirements/nginx/logs/:/var/log/nginx/
       - ./requirements/nginx/tools/ssl/:/etc/nginx/ssl/:ro
       - web_data:/www/
@@ -12,6 +11,8 @@ services:
       - 443:443
     networks:
       frontend:
+    environment:
+      HOST_42: ${HOST_42}
     restart: always
 
   test_sql:
