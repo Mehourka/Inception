@@ -4,7 +4,7 @@ DOCKER_COMPOSE=docker compose -f ./srcs/docker-compose.yml
 all: down up
 	${DOCKER_COMPOSE} exec wordpress /bin/ash
 
-up:
+up: check_env
 	${DOCKER_COMPOSE} up --build -d 
 
 exec-%:
@@ -24,7 +24,16 @@ logs:
 
 fclean:
 	${DOCKER_COMPOSE} down -v
+
+# Checks
+check_env:
+	@./srcs/tools/check_env.sh
+
 # Testing
+# Utils
+env-example: 
+	sed 's/=.*/=/' ./srcs/.env > ./srcs/.env-example
+
 alpine:
 	docker run -it --rm -p 8080:80 alpine:3.18 /bin/ash 
 
