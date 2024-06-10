@@ -15,27 +15,27 @@ services:
       HOST_42: ${HOST_42}
     restart: always
 
-  test_sql:
-    image: mariadb:11.1
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-    # volumes:
-    #   - test_db_data:/var/lib/mysql 
-    ports:
-      - 3307:3306
-    expose:
-      - 3306
-    networks:
-      backend:
+  # test_sql:
+  #   image: mariadb:11.1
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #     MARIADB_DATABASE: ${DB_NAME}
+  #     MARIADB_USER: ${DB_USER}
+  #     MARIADB_PASSWORD: ${DB_PASSWORD}
+  #   # volumes:
+  #   #   - test_db_data:/var/lib/mysql 
+  #   ports:
+  #     - 3307:3306
+  #   expose:
+  #     - 3306
+  #   networks:
+  #     backend:
 
   wordpress:
     build:
       context: ./requirements/wordpress
     depends_on:
-      - test_sql
+      - database
     expose:
       - 9000 
     environment:
@@ -52,21 +52,25 @@ services:
       HOST_42: ${HOST_42}
     volumes:
       - web_data:/www/
-      # - ./requirements/wordpress/config/wp-config.php:/www/wordpress/wp-config.php:ro
     networks:
       frontend:
       backend:
 
-  # db:
-  #   build: ./requirements/mariadb/
-  #   environment:
-  #     DB_NAME: wordpress
-  #     DB_PASSWORD: "rootroot"
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   entrypoint: ["tail", "-f", "/dev/null"]
-  #   networks:
-  #     backend:
+  database:
+    build: ./requirements/mariadb/
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USER: ${DB_USER} 
+      DB_HOST: ${DB_HOST}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    expose:
+      - 3306
+    networks:
+      backend:
 
 
 networks:
