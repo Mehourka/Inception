@@ -2,10 +2,14 @@ name: inception
 
 services:
   nginx:
-    build: ./requirements/nginx/
+    build: 
+      context: ./requirements/nginx/
+      args:
+        HOST_42: ${HOST_42}
+    depends_on:
+      - wordpress
     volumes:
       - ./requirements/nginx/logs/:/var/log/nginx/
-      - ./requirements/nginx/tools/ssl/:/etc/nginx/ssl/:ro
       - web_data:/www/
     ports:
       - 443:443
