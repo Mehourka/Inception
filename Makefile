@@ -24,6 +24,13 @@ logs:
 
 fclean:
 	${DOCKER_COMPOSE} down -v
+	docker ps -aq | xargs -r docker stop
+	docker ps -aq | xargs -r docker rm
+	docker images -aq | xargs -r docker rmi
+	docker volume ls -q | xargs -r docker volume rm
+	docker network prune
+	@rm -rf /home/kmehour/data/db /home/kmehour/data/wordpress
+
 
 # Checks
 check_env:
