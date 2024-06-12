@@ -5,7 +5,9 @@ wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
+mkdir -p /www/wordpress
 cd /www/wordpress
+wp core download
 rm -f wp-config.php
 
 # Connect to the database
@@ -13,6 +15,7 @@ while ! mysqladmin ping -h "$DB_HOST";do
 	echo "[ENTRYPOINT] Connecting to database ..."
   sleep 1;
 done
+
 
 # Create wordpress wp-config.php
 wp config create --dbhost=$DB_HOST --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD

@@ -5,23 +5,23 @@ services:
     build: 
       context: ./requirements/nginx/
       args:
-        HOST_42: ${HOST_42}
+        HOST_42: kmehour.42.fr
     depends_on:
       - wordpress
     volumes:
       - ./requirements/nginx/logs/:/var/log/nginx/
-      - web_data:/www/
+      - /home/kmehour/data/wordpress/:/www/wordpress/
     ports:
       - 443:443
     networks:
       frontend:
     environment:
-      HOST_42: ${HOST_42}
+      HOST_42: kmehour.42.fr
     restart: unless-stopped
 
   wordpress:
     build:
-      context: ./requirements/wordpress
+      context: ./requirements/wordpress/
     depends_on:
       - database
     expose:
@@ -37,9 +37,9 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
-      HOST_42: ${HOST_42}
+      HOST_42: kmehour.42.fr
     volumes:
-      - web_data:/www/
+      - /home/kmehour/data/wordpress/:/www/wordpress/
     networks:
       frontend:
       backend:
@@ -53,7 +53,7 @@ services:
       DB_USER: ${DB_USER} 
       DB_HOST: ${DB_HOST}
     volumes:
-      - db_data:/var/lib/mysql
+      - /home/kmehour/data/db/:/var/lib/mysql
     expose:
       - 3306
     networks:
@@ -72,7 +72,6 @@ networks:
 volumes:
   web_data:
   db_data:
-  test_db_data:
 
 secrets:
   my_secret:
