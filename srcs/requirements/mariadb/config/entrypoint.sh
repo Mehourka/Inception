@@ -26,6 +26,5 @@ bind-address=*
 port=3306
 user=mysql
 EOF
-# exec /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0 $@
 
 exec mysqld_safe 

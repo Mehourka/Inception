@@ -13,23 +13,7 @@ services:
       frontend:
     environment:
       HOST_42: ${HOST_42}
-    restart: always
-
-  # test_sql:
-  #   image: mariadb:11.1
-  #   environment:
-  #     MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-  #     MARIADB_DATABASE: ${DB_NAME}
-  #     MARIADB_USER: ${DB_USER}
-  #     MARIADB_PASSWORD: ${DB_PASSWORD}
-  #   # volumes:
-  #   #   - test_db_data:/var/lib/mysql 
-  #   ports:
-  #     - 3307:3306
-  #   expose:
-  #     - 3306
-  #   networks:
-  #     backend:
+    restart: unless-stopped
 
   wordpress:
     build:
@@ -55,6 +39,7 @@ services:
     networks:
       frontend:
       backend:
+    restart: unless-stopped
 
   database:
     build: ./requirements/mariadb/
@@ -69,6 +54,7 @@ services:
       - 3306
     networks:
       backend:
+    restart: unless-stopped
 
 
 networks:
