@@ -5,7 +5,7 @@ services:
     build: 
       context: ./requirements/nginx/
       args:
-      HOST_42: ${HOST_42:-kmehour.42.fr}
+        HOST_42: ${HOST_42:-kmehour.42.fr}
     depends_on:
       - wordpress
     volumes:
