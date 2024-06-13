@@ -5,7 +5,7 @@ services:
     build: 
       context: ./requirements/nginx/
       args:
-        HOST_42: kmehour.42.fr
+      HOST_42: ${HOST_42:-kmehour.42.fr}
     depends_on:
       - wordpress
     volumes:
@@ -16,7 +16,7 @@ services:
     networks:
       frontend:
     environment:
-      HOST_42: kmehour.42.fr
+      HOST_42: ${HOST_42:-kmehour.42.fr}
     restart: unless-stopped
 
   wordpress:
@@ -33,11 +33,11 @@ services:
       WP_USER: ${WP_USER}
       WP_PASSWORD: ${WP_PASSWORD}
       WP_EMAIL: ${WP_EMAIL}
-      DB_HOST: ${DB_HOST}
+      DB_HOST: mariadb
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
-      HOST_42: kmehour.42.fr
+      HOST_42: ${HOST_42:-kmehour.42.fr}
     volumes:
       - /home/kmehour/data/wordpress/:/www/wordpress/
     networks:
@@ -45,13 +45,13 @@ services:
       backend:
     restart: unless-stopped
 
-  database:
+  mariadb:
     build: ./requirements/mariadb/
     environment:
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_USER: ${DB_USER} 
-      DB_HOST: ${DB_HOST}
+      DB_HOST: mariadb
     volumes:
       - /home/kmehour/data/db/:/var/lib/mysql
     expose:
