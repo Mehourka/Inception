@@ -23,7 +23,7 @@ services:
     build:
       context: ./requirements/wordpress/
     depends_on:
-      - database
+      - mariadb
     expose:
       - 9000 
     environment:
